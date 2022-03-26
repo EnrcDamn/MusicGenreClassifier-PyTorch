@@ -121,7 +121,7 @@ if __name__ == "__main__":
     if plot:
         signal, label = gtzan[344]
         signal = signal.cpu()
-        print(signal.shape)
+        print(signal)
         print(label)
         
         plt.figure(figsize=(16, 8), facecolor="white")

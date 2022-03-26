@@ -64,4 +64,4 @@ class CNNNetwork(nn.Module):
 if __name__ == "__main__":
     cnn = CNNNetwork()
     # summary -> (model, input_shape)
-    summary(cnn.cuda(), (1, 13, 111))   # (num_channels, num_freq_frames, time_frames)
+    summary(cnn.cuda(), (1, 13, 111))   # (num_channels, num_mfcc_bands, time_frames)
