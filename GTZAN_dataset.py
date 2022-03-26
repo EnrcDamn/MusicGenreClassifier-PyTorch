@@ -37,8 +37,8 @@ class GTZANDataset(Dataset):
         signal = self._resample_if_necessary(signal, sr)
         signal = self._cut_if_necessary(signal)
         signal = self._right_pad_if_necessary(signal)
-        signal = self._spectrogram(signal)
-        #signal = self.transformation(signal)
+        # signal = self._spectrogram(signal)
+        signal = self.transformation(signal)
         return signal, label
     
     def _mix_down_if_necessary(self, signal):
@@ -77,7 +77,7 @@ class GTZANDataset(Dataset):
         return path
 
     def _get_audio_sample_label(self, index):
-        return self.annotations.iloc[index, 6]
+        return self.annotations.iloc[index, -1]
 
     def _spectrogram(self, signal):
         stft = torch.stft(signal, n_fft=1024, hop_length=512)
@@ -98,11 +98,10 @@ if __name__ == "__main__":
         device = "cpu"
     print(f"Using {device} device")
 
-    mel_spectrogram = torchaudio.transforms.MelSpectrogram(
+    mfcc = torchaudio.transforms.MFCC(
         sample_rate=SAMPLE_RATE,
-        n_fft=1024,
-        hop_length=512,
-        n_mels=64
+        n_mfcc=13,
+        log_mels=True
     )
 
     # objects inside transforms module are callable!
@@ -111,7 +110,7 @@ if __name__ == "__main__":
     gtzan = GTZANDataset(
         ANNOTATIONS_FILE,
         AUDIO_DIR,
-        mel_spectrogram,
+        mfcc,
         SAMPLE_RATE,
         NUM_SAMPLES,
         device
@@ -120,10 +119,13 @@ if __name__ == "__main__":
     print(f"There are {len(gtzan)} samples in the dataset")
 
     if plot:
-        signal, label = gtzan[0]
+        signal, label = gtzan[344]
+        signal = signal.cpu()
+        print(signal.shape)
+        print(label)
         
         plt.figure(figsize=(16, 8), facecolor="white")
-        plt.imshow(signal[0,:,:,0], origin='lower')
+        plt.imshow(signal[0,:,:], origin='lower')
         plt.autoscale(False)
         plt.xlabel("Time")
         plt.ylabel("Frequency")
