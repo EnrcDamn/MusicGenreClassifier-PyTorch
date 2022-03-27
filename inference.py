@@ -1,7 +1,7 @@
 import torch
 import torchaudio
 from cnn import CNNNetwork
-from GTZAN_dataset import GTZANDataset
+from gtzan_dataset import GTZANDataset
 from cnn_train import AUDIO_DIR, ANNOTATIONS_FILE, SAMPLE_RATE, NUM_SAMPLES
 
 class_mapping = [

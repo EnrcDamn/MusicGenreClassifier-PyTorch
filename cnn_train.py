@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import torchaudio
 from torch.utils.data import DataLoader
-from GTZAN_dataset import GTZANDataset
+from gtzan_dataset import GTZANDataset
 from cnn import CNNNetwork
 
 
