@@ -1,7 +1,7 @@
 # MusicGenreClassifier-PyTorch
 A PyTorch re-implementation of the well-known music genre classification exercise.
 
-This algorithm is a deep learning CNN classifier trained on the GTZAN dataset.
+This model is a deep learning Convolutional Neural Network (CNN) classifier trained on the GTZAN dataset.
 
 ## About Dataset
 
