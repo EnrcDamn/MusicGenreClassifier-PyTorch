@@ -72,8 +72,9 @@ class GTZANDataset(Dataset):
         return signal
     
     def _get_audio_sample_path(self, index):
-        fold = f"{self.annotations.iloc[index, -1]}"
-        path = os.path.join(self.audio_dir, fold, self.annotations.iloc[index, 0])
+        fold = f"{self.annotations.iloc[index, -2]}"
+        path = os.path.join(self.audio_dir, fold, self.annotations.iloc[index, 1])
+        a = 1
         return path
 
     def _get_audio_sample_label(self, index):
@@ -86,11 +87,11 @@ class GTZANDataset(Dataset):
         return spec
 
 if __name__ == "__main__":
-    ANNOTATIONS_FILE = "Data/features_30_sec.csv"
+    ANNOTATIONS_FILE = "Data/features_30_sec_final.csv"
     AUDIO_DIR = "Data/genres_original"
     SAMPLE_RATE = 22050
     NUM_SAMPLES = 22050 # -> 1 second of audio
-    plot = True
+    plot = False
 
     if torch.cuda.is_available():
         device = "cuda"
@@ -119,10 +120,8 @@ if __name__ == "__main__":
     print(f"There are {len(gtzan)} samples in the dataset")
 
     if plot:
-        signal, label = gtzan[344]
+        signal, label = gtzan[0]
         signal = signal.cpu()
-        print(signal)
-        print(label)
         
         plt.figure(figsize=(16, 8), facecolor="white")
         plt.imshow(signal[0,:,:], origin='lower')
