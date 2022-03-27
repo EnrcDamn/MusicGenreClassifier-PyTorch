@@ -1,3 +1,6 @@
-Data/
+Data/*
+!Data/features_30_sec_final.csv
+!data_analysis_nb.ipynb
+
 venv/
 __pycache__
