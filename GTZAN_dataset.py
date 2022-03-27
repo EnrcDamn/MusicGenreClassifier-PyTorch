@@ -74,7 +74,6 @@ class GTZANDataset(Dataset):
     def _get_audio_sample_path(self, index):
         fold = f"{self.annotations.iloc[index, -2]}"
         path = os.path.join(self.audio_dir, fold, self.annotations.iloc[index, 1])
-        a = 1
         return path
 
     def _get_audio_sample_label(self, index):
@@ -91,7 +90,7 @@ if __name__ == "__main__":
     AUDIO_DIR = "Data/genres_original"
     SAMPLE_RATE = 22050
     NUM_SAMPLES = 22050 # -> 1 second of audio
-    plot = False
+    plot = True
 
     if torch.cuda.is_available():
         device = "cuda"
@@ -101,8 +100,15 @@ if __name__ == "__main__":
 
     mfcc = torchaudio.transforms.MFCC(
         sample_rate=SAMPLE_RATE,
-        n_mfcc=13,
+        n_mfcc=20,
         log_mels=True
+    )
+
+    mel_spectrogram = torchaudio.transforms.MelSpectrogram(
+        sample_rate=SAMPLE_RATE,
+        n_fft=1024,
+        hop_length=512,
+        n_mels=64
     )
 
     # objects inside transforms module are callable!
@@ -122,6 +128,7 @@ if __name__ == "__main__":
     if plot:
         signal, label = gtzan[0]
         signal = signal.cpu()
+        print(signal.shape)
         
         plt.figure(figsize=(16, 8), facecolor="white")
         plt.imshow(signal[0,:,:], origin='lower')

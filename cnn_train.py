@@ -1,4 +1,3 @@
-from random import shuffle
 import torch
 from torch import nn
 import torchaudio
@@ -10,7 +9,7 @@ from cnn import CNNNetwork
 BATCH_SIZE = 128
 EPOCHS = 10
 LEARNING_RATE = 0.001
-ANNOTATIONS_FILE = "Data/features_30_sec.csv"
+ANNOTATIONS_FILE = "Data/features_30_sec_final.csv"
 AUDIO_DIR = "Data/genres_original"
 SAMPLE_RATE = 22050
 NUM_SAMPLES = 22050 # -> 1 second of audio
@@ -23,7 +22,6 @@ def create_data_loader(train_data, batch_size):
 
 def train_one_epoch(model, data_loader, loss_fn, optimiser, device):
     for inputs, targets in data_loader:
-        print(len(targets))
         inputs, targets = inputs.to(device), torch.tensor(targets).to(device)
 
         # calculate loss
@@ -56,8 +54,15 @@ if __name__ == "__main__":
     # instantiate dataset object and create data loader
     mfcc = torchaudio.transforms.MFCC(
         sample_rate=SAMPLE_RATE,
-        n_mfcc=13,
+        n_mfcc=20,
         log_mels=True
+    )
+
+    mel_spectrogram = torchaudio.transforms.MelSpectrogram(
+        sample_rate=SAMPLE_RATE,
+        n_fft=1024,
+        hop_length=512,
+        n_mels=64
     )
 
     gtzan = GTZANDataset(
